@@ -10,10 +10,15 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(40.0),
+          padding: EdgeInsets.all(40.0),
           child: Column(
             children: [
-              const Image(image: AssetImage('assets/images/photo_logo.jpg')),
+              CircleAvatar(
+                backgroundColor: Colors.transparent,
+                backgroundImage: AssetImage('assets/images/depug.png'),
+                radius: 150,
+              ),
+              // const Image(image: AssetImage('assets/images/photo_logo.jpg')),
               const Text('مركز مبيداتي'),
               const Text('يسعد بخدمتكم '),
               TextFieldWidget(
