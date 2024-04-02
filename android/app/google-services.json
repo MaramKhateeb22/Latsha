@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1006926029707",
+    "project_id": "mobidati",
+    "storage_bucket": "mobidati.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1006926029707:android:79cf733becf8a7d7ac058e",
+        "android_client_info": {
+          "package_name": "com.example.mopidati"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCq_QMngWeJsXTVd05kpk1GbJu0283GlyM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
