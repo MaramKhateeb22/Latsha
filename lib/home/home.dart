@@ -217,6 +217,23 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(items: const [
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.add,
+            ),
+            label: 'بلاغ جديد'),
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.playlist_add_circle_sharp,
+            ),
+            label: 'حجز جديد'),
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.menu,
+            ),
+            label: 'إرشادات '),
+      ]),
     );
   }
 }
