@@ -5,7 +5,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mopidati/auth/login.dart';
 import 'package:mopidati/auth/sign_up.dart';
 import 'package:mopidati/auth/splash.dart';
-import 'package:mopidati/home/home.dart';
+import 'package:mopidati/screens/ReportUser/ReportUser.dart';
+import 'package:mopidati/screens/home/home.dart';
+import 'package:mopidati/screens/mapReport/mapReport.dart';
 import 'package:mopidati/utiles/constants.dart';
 
 import 'firebase_options.dart';
@@ -81,9 +83,11 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const SplashScreen(),
-        '/home': (context) => MyHomePage(),
+        '/home': (context) => const MyHomePage(),
         '/login': (context) => const LoginScreen(),
         '/signup': (context) => const SignUpScreen(),
+        '/ReportUser': (context) => const ReportUser(),
+        '/MapReport': (context) => const MapReport(),
       },
     );
   }

@@ -7,13 +7,13 @@ class TextFormFieldWidget extends StatelessWidget {
       required this.hintText,
       this.onChanged,
       this.obscureText = false,
-      required this.validator,
+      this.validator,
       required this.keyboardType,
       this.suffixIcon});
   TextEditingController yourController;
   String hintText;
   Function(String)? onChanged;
-  Function(String) validator;
+  Function(String)? validator;
   bool obscureText;
   TextInputType keyboardType;
   Widget? suffixIcon;

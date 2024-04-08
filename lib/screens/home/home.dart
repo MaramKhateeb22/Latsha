@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mopidati/screens/instructions/instructions.dart';
+import 'package:mopidati/screens/newReserve/newReserve.dart';
+import 'package:mopidati/screens/report/newReportScreen.dart';
 import 'package:mopidati/utiles/constants.dart';
-import 'package:mopidati/widgets/text_field_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -14,6 +15,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  List<Widget> screens = [
+    const NewReportScreen(),
+    const NewReserve(),
+    const InstructionScreen(),
+  ];
+  int currentIndex = 0;
   Future<DocumentSnapshot<Map<String, dynamic>>?>? initName() async {
     if (FirebaseAuth.instance.currentUser != null) {
       print(FirebaseAuth.instance.currentUser!.uid);
@@ -30,6 +37,11 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
+        title: currentIndex == 0
+            ? const Text('بلاغ جديد')
+            : currentIndex == 1
+                ? const Text('حجز جديد')
+                : const Text('الإرشادات'),
         leading: IconButton(
           onPressed: () {
             _scaffoldKey.currentState?.openDrawer();
@@ -99,14 +111,16 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.add),
-              title: const Text(' بلاغ جديد '),
+              leading: const Icon(Icons.timelapse_sharp),
+              title: const Text('حجوزاتي'),
               onTap: () {},
             ),
             ListTile(
               leading: const Icon(Icons.menu_outlined),
               title: const Text('بلاغاتي'),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, '/ReportUser');
+              },
             ),
             ListTile(
               leading: const Icon(Icons.phone),
@@ -169,71 +183,30 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(40.0),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  backgroundImage: AssetImage('assets/images/depug.png'),
-                  radius: 100,
+      body: screens[currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+          onTap: (value) {
+            setState(() {});
+            currentIndex = value;
+          },
+          currentIndex: currentIndex,
+          items: const [
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.add,
                 ),
-                // const Image(image: AssetImage('assets/images/photo_logo.jpg')),
-                const Text('مركز مبيداتي'),
-                const Text('يسعد بخدمتكم '),
-                TextFieldWidget(
-                    hintText: 'بلاغ جديد',
-                    prefixIcon: const Icon(
-                      Icons.add,
-                      // size:  ScreenUtil().setSp(20),
-                    ),
-                    onTap: () {}),
-                const SizedBox(
-                  height: 10,
+                label: 'بلاغ جديد'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.playlist_add_circle_sharp,
                 ),
-                TextFieldWidget(
-                  hintText: 'بلاغاتي',
-                  prefixIcon: const Icon(
-                    FontAwesomeIcons.fileSignature,
-                  ),
-                  onTap: () {},
+                label: 'حجز جديد'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.menu,
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextFieldWidget(
-                  hintText: 'أضف فكرة ',
-                  prefixIcon: const Icon(
-                    FontAwesomeIcons.lightbulb,
-                  ),
-                  onTap: () {},
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(items: const [
-        BottomNavigationBarItem(
-            icon: Icon(
-              Icons.add,
-            ),
-            label: 'بلاغ جديد'),
-        BottomNavigationBarItem(
-            icon: Icon(
-              Icons.playlist_add_circle_sharp,
-            ),
-            label: 'حجز جديد'),
-        BottomNavigationBarItem(
-            icon: Icon(
-              Icons.menu,
-            ),
-            label: 'إرشادات '),
-      ]),
+                label: 'إرشادات '),
+          ]),
     );
   }
 }
