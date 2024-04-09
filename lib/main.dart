@@ -8,6 +8,8 @@ import 'package:mopidati/auth/splash.dart';
 import 'package:mopidati/screens/ReportUser/ReportUser.dart';
 import 'package:mopidati/screens/home/home.dart';
 import 'package:mopidati/screens/mapReport/mapReport.dart';
+import 'package:mopidati/screens/newReserve/mapReveerse/mapReverse.dart';
+import 'package:mopidati/screens/newReserve/newReserve.dart';
 import 'package:mopidati/utiles/constants.dart';
 
 import 'firebase_options.dart';
@@ -88,6 +90,8 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => const SignUpScreen(),
         '/ReportUser': (context) => const ReportUser(),
         '/MapReport': (context) => const MapReport(),
+        '/MapReverse': (context) => const MapReverse(),
+        '/NewReverseScreen': (context) => const NewReverseScreen(),
       },
     );
   }

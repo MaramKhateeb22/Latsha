@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_toastr/flutter_toastr.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:mopidati/screens/mapReport/mapReport.dart';
 import 'package:mopidati/screens/report/cubit/cubit.dart';
 import 'package:mopidati/screens/report/cubit/state.dart';
 import 'package:mopidati/utiles/constants.dart';
@@ -97,6 +98,7 @@ class _NewReportScreenState extends State<NewReportScreen> {
                     ),
                     TextButton(
                       onPressed: () {
+                       
                         Navigator.pushNamedAndRemoveUntil(
                           context,
                           '/MapReport', // الصفحة التي ترغب في الانتقال إليها

@@ -5,14 +5,14 @@ import 'package:latlong2/latlong.dart';
 import 'package:mopidati/widgets/message.dart';
 import 'package:mopidati/widgets/my_button_widget.dart';
 
-class MapReport extends StatefulWidget {
-  const MapReport({super.key});
+class MapReverse extends StatefulWidget {
+  const MapReverse({super.key});
 
   @override
-  State<MapReport> createState() => _MapReportState();
+  State<MapReverse> createState() => _MapReverseState();
 }
 
-class _MapReportState extends State<MapReport> {
+class _MapReverseState extends State<MapReverse> {
   final MapController _mapController = MapController();
   List<Marker> markerss = [];
   LatLng? _selectedPoint; // متغير لحفظ النقطة المختارة
@@ -45,23 +45,17 @@ class _MapReportState extends State<MapReport> {
     final userLocation = LatLng(position.latitude, position.longitude);
     _mapController.move(userLocation, 15.0); // يمكنك تعديل مستوى التكبير
     final marker = Marker(
-      width: 120.0,
-      height: 120.0,
+      width: 80.0,
+      height: 80.0,
       point: userLocation,
-      child: const SingleChildScrollView(
-        child: Column(
-          children: [
-            Text('مكانك حاليا'),
-            Icon(
-              Icons.location_on,
-              size: 30.0,
-              color: Color.fromARGB(255, 73, 54, 244),
-            ),
-          ],
+      child: Container(
+        child: const Icon(
+          Icons.location_on,
+          size: 30.0,
+          color: Colors.red,
         ),
       ),
     );
-
     setState(() {
       markerss.add(marker);
     });
@@ -93,9 +87,7 @@ class _MapReportState extends State<MapReport> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('مكان المنتشرة الحشرة فيه للإبلاغ'),
-      ),
+      appBar: AppBar(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -126,22 +118,27 @@ class _MapReportState extends State<MapReport> {
               onPressed: () {
                 if (_selectedPoint != null) {
                   // تأكد من أن هناك نقطة مختارة
-                  Navigator.pop(context, _selectedPoint);
-                  print(_selectedPoint);
 
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) =>
-                  //         const NewReportScreen(), // يجب أن تستبدل هذا بالصفحة الهدف الفعلية
-                  //     settings: RouteSettings(arguments: _selectedPoint),
-                  //   ),
-                  // );
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    '/NewReverseScreen',
+                    // الصفحة التي ترغب في الانتقال إليها
+                    ModalRoute.withName(
+                      '/NewReverseScreen',
+                    ), // '/HomePage' هو اسم المسار للصفحة التي تريد البقاء في المكدس
+                  );
+                  // Navigator.pushNamed(context, '/NewReverseScreen',
+                  //     arguments: _selectedPoint
+                  //     // MaterialPageRoute(
+                  //     //   builder: (context) =>
+                  //     //       const NewReverseScreen(), // يجب أن تستبدل هذا بالصفحة الهدف الفعلية
+                  //     //   settings: RouteSettings(arguments: _selectedPoint),
+                  //     // ),
+                  //     );
                 } else {
                   // يمكنك إضافة تعليق للمستخدم ليختار نقطة إذا لم يكن قد اختار واحدة بعد
                   print("يرجى اختيار نقطة على الخريطة أولاً.");
-                  message(context,
-                      'يرجى اختيار نقطة انتشار الحشرة  على الخريطة أولاً');
+                  message(context, 'يرجى اختيار نقطة على الخريطة أولاً');
                 }
               }),
         ],

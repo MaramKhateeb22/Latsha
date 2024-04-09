@@ -17,7 +17,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<Widget> screens = [
     const NewReportScreen(),
-    const NewReserve(),
+    const NewReverseScreen(),
     const InstructionScreen(),
   ];
   int currentIndex = 0;
