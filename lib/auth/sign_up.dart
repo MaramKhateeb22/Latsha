@@ -16,6 +16,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final nameController = TextEditingController();
+  final TextEditingController numberPhoneController = TextEditingController();
+
   final GlobalKey<FormState> form = GlobalKey<FormState>();
   bool obscureText = false;
   @override
@@ -51,6 +53,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   const SizedBox(height: 30),
                   TextFormFieldWidget(
+                      suffixIcon: const Icon(Icons.email),
                       keyboardType: TextInputType.emailAddress,
                       yourController: emailController,
                       hintText: 'أدخل بريدك الالكتروني',
@@ -59,12 +62,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       }),
                   const SizedBox(height: 20),
                   TextFormFieldWidget(
+                      suffixIcon: const Icon(Icons.abc),
                       keyboardType: TextInputType.name,
                       yourController: nameController,
-                      hintText: 'أدخل  اسمك ',
+                      hintText: ' أدخل  اسمك الكامل',
                       validator: (value) {
-                        return (value.length < 2) ? 'قصير جدا ' : null;
+                        if (value.length < 2) {
+                          return 'قصير جدا';
+                        }
                       }),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    style: const TextStyle(height: 0.3),
+                    keyboardType: TextInputType.phone,
+                    controller: numberPhoneController,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        suffixIcon: Icon(Icons.numbers),
+                        hintText: 'أدخل رقمك'),
+                    validator: (value) {
+                      if (value!.length < 10) {
+                        return 'قصير جدا ';
+                      }
+                      return null;
+                    },
+                  ),
                   const SizedBox(height: 20),
                   TextFormFieldWidget(
                       keyboardType: TextInputType.emailAddress,
@@ -89,9 +111,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: const Text('أنشئ الحساب'),
                       onPressed: () async {
                         try {
+                          form.currentState?.validate();
                           if (form.currentState?.validate() ?? false) {
                             String email = emailController.text;
                             String name = nameController.text;
+                            String numberPhone = numberPhoneController.text;
                             UserCredential result = await FirebaseAuth.instance
                                 .createUserWithEmailAndPassword(
                                     email: emailController.text,
@@ -105,6 +129,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   .set({
                                 "name": name,
                                 "email": email,
+                                "numberphone": numberPhone,
+                                "createdAt": Timestamp.now(),
                               });
                               print("finish write");
                             } else {

@@ -2,12 +2,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mopidati/widgets/message.dart';
 
 pickImage(ImageSource source, context) async {
-  ImagePicker _imagepicker = ImagePicker();
-  XFile? _file = await _imagepicker.pickImage(source: source);
-  if (_file != null) {
-    return await _file.readAsBytes();
+  ImagePicker imagepicker = ImagePicker();
+  XFile? file = await imagepicker.pickImage(source: source);
+  if (file != null) {
+    return await file.readAsBytes();
   } else {
-    message(context, 'No Image Selected');
-    print('No Image Selected');
+    message(context, 'لم يتم اختيار صورة');
+    print('لم يتم اختيار صورة');
   }
 }

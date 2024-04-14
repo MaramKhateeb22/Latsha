@@ -12,6 +12,7 @@ class TextFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      style: const TextStyle(height: 0.3),
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.all(4.0),
         hintText: hintText,

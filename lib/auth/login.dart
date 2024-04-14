@@ -43,6 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 30),
                   TextFormFieldWidget(
+                      suffixIcon: const Icon(Icons.email),
                       keyboardType: TextInputType.emailAddress,
                       yourController: emailController,
                       hintText: 'أدخل بريدك الالكتروني',

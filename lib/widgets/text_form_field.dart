@@ -12,8 +12,8 @@ class TextFormFieldWidget extends StatelessWidget {
       this.suffixIcon});
   TextEditingController yourController;
   String hintText;
-  Function(String)? onChanged;
   Function(String)? validator;
+  Function(String)? onChanged;
   bool obscureText;
   TextInputType keyboardType;
   Widget? suffixIcon;
@@ -34,9 +34,9 @@ class TextFormFieldWidget extends StatelessWidget {
       onChanged: onChanged,
       validator: (value) {
         if (value == null || value.isEmpty) {
+          validator;
           return 'هذا الحقل مطلوب';
         }
-        validator;
         return null;
       },
     );

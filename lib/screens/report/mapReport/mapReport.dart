@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart'; // إضافة الحزمة الجديدة هنا
 import 'package:latlong2/latlong.dart';
+import 'package:mopidati/screens/report/newReportScreen.dart';
 import 'package:mopidati/widgets/message.dart';
 import 'package:mopidati/widgets/my_button_widget.dart';
 
 class MapReport extends StatefulWidget {
   const MapReport({super.key});
+
+  // const MapReport({super.key});
+  // const MapReport({super.key, required this.selectedPoint});
+  // final LatLng selectedPoint;
 
   @override
   State<MapReport> createState() => _MapReportState();
@@ -48,17 +53,15 @@ class _MapReportState extends State<MapReport> {
       width: 120.0,
       height: 120.0,
       point: userLocation,
-      child: const SingleChildScrollView(
-        child: Column(
-          children: [
-            Text('مكانك حاليا'),
-            Icon(
-              Icons.location_on,
-              size: 30.0,
-              color: Color.fromARGB(255, 73, 54, 244),
-            ),
-          ],
-        ),
+      child: const Column(
+        children: [
+          Text('مكانك حاليا'),
+          Icon(
+            Icons.location_on,
+            size: 30.0,
+            color: Color.fromARGB(255, 73, 54, 244),
+          ),
+        ],
       ),
     );
 
@@ -129,13 +132,13 @@ class _MapReportState extends State<MapReport> {
                   Navigator.pop(context, _selectedPoint);
                   print(_selectedPoint);
 
-                  // Navigator.push(
+                  // Navigator.pop(
                   //   context,
                   //   MaterialPageRoute(
                   //     builder: (context) =>
                   //         const NewReportScreen(), // يجب أن تستبدل هذا بالصفحة الهدف الفعلية
                   //     settings: RouteSettings(arguments: _selectedPoint),
-                  //   ),
+                  // ),
                   // );
                 } else {
                   // يمكنك إضافة تعليق للمستخدم ليختار نقطة إذا لم يكن قد اختار واحدة بعد

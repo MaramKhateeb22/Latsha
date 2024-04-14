@@ -45,15 +45,18 @@ class _MapReverseState extends State<MapReverse> {
     final userLocation = LatLng(position.latitude, position.longitude);
     _mapController.move(userLocation, 15.0); // يمكنك تعديل مستوى التكبير
     final marker = Marker(
-      width: 80.0,
-      height: 80.0,
+      width: 120.0,
+      height: 120.0,
       point: userLocation,
-      child: Container(
-        child: const Icon(
-          Icons.location_on,
-          size: 30.0,
-          color: Colors.red,
-        ),
+      child: const Column(
+        children: [
+          Text('مكانك حاليا'),
+          Icon(
+            Icons.location_on,
+            // size: 30.0,
+            color: Color.fromARGB(255, 73, 54, 244),
+          ),
+        ],
       ),
     );
     setState(() {
@@ -87,7 +90,9 @@ class _MapReverseState extends State<MapReverse> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('حدد مكان الرش بالضبط '),
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -118,15 +123,16 @@ class _MapReverseState extends State<MapReverse> {
               onPressed: () {
                 if (_selectedPoint != null) {
                   // تأكد من أن هناك نقطة مختارة
-
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    '/NewReverseScreen',
-                    // الصفحة التي ترغب في الانتقال إليها
-                    ModalRoute.withName(
-                      '/NewReverseScreen',
-                    ), // '/HomePage' هو اسم المسار للصفحة التي تريد البقاء في المكدس
-                  );
+                  Navigator.pop(context, _selectedPoint);
+                  print(_selectedPoint);
+                  // Navigator.pushNamedAndRemoveUntil(
+                  //   context,
+                  //   '/NewReverseScreen',
+                  //   // الصفحة التي ترغب في الانتقال إليها
+                  //   ModalRoute.withName(
+                  //     '/NewReverseScreen',
+                  //   ), // '/HomePage' هو اسم المسار للصفحة التي تريد البقاء في المكدس
+                  // );
                   // Navigator.pushNamed(context, '/NewReverseScreen',
                   //     arguments: _selectedPoint
                   //     // MaterialPageRoute(

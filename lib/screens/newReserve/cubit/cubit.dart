@@ -22,7 +22,7 @@ class AddReverseCubit extends Cubit<AddReverseState> {
   static AddReverseCubit get(context) => BlocProvider.of(context);
 
   final formkey = GlobalKey<FormState>();
-  TextEditingController AdressController = TextEditingController();
+  TextEditingController adressController = TextEditingController();
   TextEditingController nameInsectController = TextEditingController();
   TextEditingController spaceController = TextEditingController();
   Uint8List? image;
@@ -59,11 +59,12 @@ class AddReverseCubit extends Cubit<AddReverseState> {
         await FirebaseFirestore.instance.collection("Reverses").doc(uuid).set({
           'id': uuid,
           'Type Insect': nameInsectController.text,
-          'Adress': AdressController.text,
+          'Adress': adressController.text,
           'space': spaceController.text,
           'imageLink': imagUrl,
           'location': point.toString(),
           'statusReverse': statusIndex,
+          // 'numberPhone': numberPhoneController.text,
           'idUser': FirebaseAuth.instance.currentUser!.uid,
           'createdAt': Timestamp.now(),
         });
@@ -96,8 +97,9 @@ class AddReverseCubit extends Cubit<AddReverseState> {
 
   void clearForm() {
     nameInsectController.clear();
-    AdressController.clear();
+    adressController.clear();
     spaceController.clear();
+    // numberPhoneController.clear();
     image = null;
     emit(ClearFormState());
     // webImage = Uint8List(8);

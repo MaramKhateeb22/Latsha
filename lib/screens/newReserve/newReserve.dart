@@ -25,23 +25,24 @@ class _NewReverseScreenState extends State<NewReverseScreen> {
   String? _selectedValue;
   final double _area = 0.0;
   final spacekey = GlobalKey<FormState>();
+  late LatLng point;
 
   @override
   Widget build(BuildContext context) {
-    final route = ModalRoute.of(context);
-    LatLng point;
-    if (route != null && route.settings.arguments != null) {
-      point = route.settings.arguments as LatLng;
-    } else {
-      // هنا، يمكنك تعيين قيمة افتراضية لـ point أو طرح خطأ.
-      point = const LatLng(0, 0); // كقيمة افتراضية. ضع أي قيمة تريدها.
-    }
+    // final route = ModalRoute.of(context);
+    // LatLng point;
+    // if (route != null && route.settings.arguments != null) {
+    //   point = route.settings.arguments as LatLng;
+    // } else {
+    //   // هنا، يمكنك تعيين قيمة افتراضية لـ point أو طرح خطأ.
+    //   point = const LatLng(0, 0); // كقيمة افتراضية. ضع أي قيمة تريدها.
+    // }
     return BlocProvider(
       create: (context) => AddReverseCubit(),
       child: BlocConsumer<AddReverseCubit, AddReverseState>(
         listener: (context, state) {
           if (state is AddReverseSuccessState) {
-            Navigator.pushNamed(context, '/home');
+            Navigator.pushNamed(context, '/ReverseUser');
             message(context, 'تم الحجز بنجاح');
             FlutterToastr.show(
               ' تم الحجز  بنجاح ',
@@ -84,7 +85,7 @@ class _NewReverseScreenState extends State<NewReverseScreen> {
                                           .selectImage(context);
                                     },
                                     child: const Text(
-                                      'Choose The  image insect',
+                                      'اختر صورة الحشرة',
                                       style: TextStyle(
                                         color: Colors.white,
                                       ),
@@ -98,12 +99,21 @@ class _NewReverseScreenState extends State<NewReverseScreen> {
                       height: 10,
                     ),
                     TextButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
+                      onPressed: () async {
+                        final selectedPoint = await Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const MapReverse()),
+                            builder: (context) => const MapReverse(),
+                            // settings: RouteSettings(arguments: selectedPoint),
+                          ),
                         );
+                        if (selectedPoint != null) {
+                          point = selectedPoint
+                              as LatLng; // هنا تستقبل البيانات من الصفحة B
+                        } else {
+                          point = const LatLng(0.0, 0.0);
+                          // تعامل مع حالة أنه لم يتم تمرير أي بيانات
+                        }
                       },
                       child: const Text('حدد مكانك  من  الخريطة'),
                     ),
@@ -207,11 +217,30 @@ class _NewReverseScreenState extends State<NewReverseScreen> {
                             child: TextFormFieldWidget(
                                 yourController: context
                                     .read<AddReverseCubit>()
-                                    .AdressController,
+                                    .adressController,
                                 hintText: 'أدخل المكان بالتفصيل',
                                 // validator: (p0) {},
                                 keyboardType: TextInputType.name),
                           ),
+                          // const SizedBox(
+                          //   height: 10,
+                          // ),
+                          // Padding(
+                          //   padding:
+                          //       const EdgeInsets.symmetric(horizontal: 20.0),
+                          //   child: TextFormFieldWidget(
+                          //       yourController: context
+                          //           .read<AddReverseCubit>()
+                          //           .numberPhoneController,
+                          //       hintText: 'أدخل  رقمك الجوال',
+                          //       validator: (value) {
+                          //         if (value.length < 10) {
+                          //           return 'يجب أن يكون طول الرقم 10 أرقام على الأقل  ';
+                          //         }
+                          //       },
+                          // validator: (p0) {},
+                          // keyboardType: TextInputType.phone),
+                          // ),
                         ],
                       ),
                     ),
@@ -221,117 +250,91 @@ class _NewReverseScreenState extends State<NewReverseScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        MaterialButton(
-                          color: sColor,
-                          onPressed: () {
-                            context
-                                .read<AddReverseCubit>()
-                                .saveDataReverse(context, point);
-                          },
-                          child: const Text('حجز للرش',
-                              style: TextStyle(color: Colors.white)),
-                        ),
+                        state is AddReverseLoadingState
+                            ? const Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : MaterialButton(
+                                color: sColor,
+                                onPressed: () {
+                                  context
+                                      .read<AddReverseCubit>()
+                                      .formkey
+                                      .currentState!
+                                      .validate();
+                                  context
+                                      .read<AddReverseCubit>()
+                                      .saveDataReverse(context, point);
+                                },
+                                child: const Text(
+                                  'حجز للرش',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
                         FutureBuilder(
-                            future: initInsect(),
-                            builder: (context, snapshot) => MaterialButton(
-                                  color: sColor,
-                                  onPressed: () {
-                                    spacekey.currentState?.validate();
-                                    if (_selectedValue == null) {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text(
-                                                'يرجى اختيار نوع الحشرة'),
-                                            content: const Text(
-                                                'يجب عليك اختيار نوع الحشرة أولاً قبل حساب التكلفة.'),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                child: const Text('حسناً'),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    } else {
-                                      double area = double.parse((context
-                                              .read<AddReverseCubit>()
-                                              .spaceController)
-                                          .text);
-                                      double priceSpray = double.parse(snapshot
-                                          .data!.docs
-                                          .firstWhere((element) =>
-                                              element.data()['name'] ==
-                                              _selectedValue)['priceSpray']);
-                                      double totalCost = area * priceSpray;
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text("تكلفة الرش"),
-                                            content:
-                                                Text("تكلفة الرش هي $totalCost"
-                                                    '  ل.س'),
-                                            actions: [
-                                              TextButton(
-                                                child: const Text("موافق"),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    }
+                          future: initInsect(),
+                          builder: (context, snapshot) => MaterialButton(
+                            color: sColor,
+                            onPressed: () {
+                              spacekey.currentState?.validate();
+                              if (_selectedValue == null) {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title:
+                                          const Text('يرجى اختيار نوع الحشرة'),
+                                      content: const Text(
+                                          'يجب عليك اختيار نوع الحشرة أولاً قبل حساب التكلفة.'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: const Text('حسناً'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
                                   },
-                                  child: const Text(
-                                    'تكلفة الرش ',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                )
-                            // builder: (context, snapshot) => MaterialButton(
-                            //   color: sColor,
-                            //   onPressed: () {
-                            //     double priceSpray = snapshot.data!.docs
-                            //         .firstWhere((doc) =>
-                            //             doc.data()['name'] ==
-                            //             _selectedValue)['priceSpray'];
-                            //     double totalCost = _area * priceSpray;
-                            //     showDialog(
-                            //       context: context,
-                            //       builder: (BuildContext context) {
-                            //         return AlertDialog(
-                            //           title: const Text('تكلفة الرش'),
-                            //           content:
-                            //               Text('التكلفة الإجمالية: $totalCost'),
-                            //           actions: <Widget>[
-                            //             TextButton(
-                            //               child: const Text('إغلاق'),
-                            //               onPressed: () {
-                            //                 Navigator.of(context).pop();
-                            //               },
-                            //             ),
-                            //           ],
-                            //         );
-                            //       },
-                            //     );
-                            //   },
-                            //   child: const Text(
-                            //     'تكلفة الرش',
-                            //     style: TextStyle(color: Colors.white),
-                            //   ),
-                            // ),
+                                );
+                              } else {
+                                int area = int.parse((context
+                                        .read<AddReverseCubit>()
+                                        .spaceController)
+                                    .text);
+                                int priceSpray = int.parse(snapshot.data!.docs
+                                    .firstWhere((element) =>
+                                        element.data()['name'] ==
+                                        _selectedValue)['priceSpray']);
+                                int totalCost = area * priceSpray;
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text(" تكلفة الرش"),
+                                      content: Text(
+                                          ":تكلفة الرش التقريبية هي $totalCost"
+                                          '  ل.س'),
+                                      actions: [
+                                        TextButton(
+                                          child: const Text("موافق"),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
+                            },
+                            child: const Text(
+                              'تكلفة الرش ',
+                              style: TextStyle(color: Colors.white),
                             ),
+                          ),
+                        ),
                       ],
-                    ),
-                    FutureBuilder(
-                      future: initInsect(),
-                      builder: (context, snapshot) => const Text(''),
                     ),
                   ],
                 ),
