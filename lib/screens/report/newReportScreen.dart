@@ -202,7 +202,8 @@ class _NewReportScreenState extends State<NewReportScreen> {
                               child: CircularProgressIndicator(),
                             )
                           : ButtonWidget(
-                              child: const Text('إبلاغ'),
+                              child: 'إبلاغ',
+                              icon: Icons.telegram,
                               onPressed: () {
                                 if (point == null) {
                                   // تحقق من أن المستخدم لم يحدد الموقع

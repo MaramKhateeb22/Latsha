@@ -76,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         return (value.length < 2) ? 'قصير جدا ' : null;
                       }),
                   ButtonWidget(
-                      child: const Text('تسجيل الدخول '),
+                      child: 'تسجيل الدخول ',
                       onPressed: () async {
                         try {
                           if (form.currentState?.validate() ?? false) {

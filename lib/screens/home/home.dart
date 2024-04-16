@@ -18,7 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Widget> screens = [
     const NewReportScreen(),
     const NewReverseScreen(),
-    const InstructionScreen(),
+    InstructionScreen(),
   ];
   int currentIndex = 0;
   Future<DocumentSnapshot<Map<String, dynamic>>?>? initName() async {
