@@ -7,12 +7,17 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mopidati/auth/login.dart';
 import 'package:mopidati/auth/sign_up.dart';
 import 'package:mopidati/auth/splash.dart';
-import 'package:mopidati/screens/ReportUser/ReportUser.dart';
-import 'package:mopidati/screens/ReverseUser/ReverseUser.dart';
 import 'package:mopidati/screens/home/home.dart';
-import 'package:mopidati/screens/newReserve/mapReveerse/mapReverse.dart';
-import 'package:mopidati/screens/newReserve/newReserve.dart';
+import 'package:mopidati/screens/instructions/ItemInsraction.dart';
+import 'package:mopidati/screens/report/ReportUser/ReportUser.dart';
+import 'package:mopidati/screens/report/edit/editReportScreen.dart';
+import 'package:mopidati/screens/report/itemReport.dart';
 import 'package:mopidati/screens/report/mapReport/mapReport.dart';
+import 'package:mopidati/screens/reverse/ReverseUser/ReverseUser.dart';
+import 'package:mopidati/screens/reverse/add/newReserve.dart';
+import 'package:mopidati/screens/reverse/edit/editReverseScreen.dart';
+import 'package:mopidati/screens/reverse/itemReverse.dart';
+import 'package:mopidati/screens/reverse/mapReveerse/mapReverse.dart';
 import 'package:mopidati/utiles/constants.dart';
 
 import 'firebase_options.dart';
@@ -32,7 +37,6 @@ void main() async {
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
-
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -44,7 +48,6 @@ class _MyAppState extends State<MyApp> {
       (RemoteMessage message) {
         print('Got a message whilst in the foreground!');
         print('Message data: ${message.data}');
-
         if (message.notification != null) {
           print(
               'Message also contained a notification: ${message.notification}');
@@ -82,6 +85,21 @@ class _MyAppState extends State<MyApp> {
       locale: const Locale("ar", "AE"),
       title: 'Flutter Demo',
       theme: ThemeData(
+        // cardTheme: CardTheme(
+        //   shadowColor: Colors.grey,
+        //   shape: RoundedRectangleBorder(
+        //     borderRadius: BorderRadius.circular(15.0),
+        //   ),
+        drawerTheme: const DrawerThemeData(
+          elevation: 10,
+        ),
+        listTileTheme: const ListTileThemeData(textColor: pColor),
+        cardTheme: CardTheme(
+            shadowColor: Colors.grey,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            elevation: 10),
         scaffoldBackgroundColor: backgroundColor,
         primaryColor: backgroundColor,
         //textbutton
@@ -96,9 +114,11 @@ class _MyAppState extends State<MyApp> {
         //text
         textTheme: const TextTheme(
           bodyMedium: TextStyle(
-              color: pColor, fontSize: 25, fontWeight: FontWeight.bold),
-          bodyLarge: TextStyle(color: pColor),
-          bodySmall: TextStyle(color: pColor),
+            color: Colors.black,
+            fontSize: 23,
+          ),
+          // bodyLarge: TextStyle(color: pColor),
+          // bodySmall: TextStyle(color: pColor),
         ),
         //appbar theme
         appBarTheme: const AppBarTheme(
@@ -134,6 +154,11 @@ class _MyAppState extends State<MyApp> {
         '/MapReport': (context) => const MapReport(),
         '/MapReverse': (context) => const MapReverse(),
         '/NewReverseScreen': (context) => const NewReverseScreen(),
+        '/item-instraction': (context) => const ItemInstraction(),
+        '/item-reverse': (context) => const ItemeReverse(),
+        '/item-report': (context) => const ItemeReport(),
+        '/edit-report': (context) => const EditReportScreen(),
+        '/edit-reverse': (context) => const EditReverseScreen(),
       },
     );
   }

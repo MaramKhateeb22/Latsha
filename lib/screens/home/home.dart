@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mopidati/screens/instructions/instructions.dart';
-import 'package:mopidati/screens/newReserve/newReserve.dart';
-import 'package:mopidati/screens/report/newReportScreen.dart';
+import 'package:mopidati/screens/report/add/newReportScreen.dart';
+import 'package:mopidati/screens/reverse/add/newReserve.dart';
 import 'package:mopidati/utiles/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -18,7 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Widget> screens = [
     const NewReportScreen(),
     const NewReverseScreen(),
-    InstructionScreen(),
+    const InstructionScreen(),
   ];
   int currentIndex = 0;
   Future<DocumentSnapshot<Map<String, dynamic>>?>? initName() async {
@@ -57,11 +57,15 @@ class _MyHomePageState extends State<MyHomePage> {
             DrawerHeader(
               padding: const EdgeInsets.all(20),
               decoration: const BoxDecoration(
-                color: backgroundColor,
-              ),
+                  // color: backgroundColor,
+                  ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  CircleAvatar(
+                    radius: 20,
+                    child: Image.asset('assets/images/images.png'),
+                  ),
                   FutureBuilder(
                     future: initName(),
                     builder: (context, snap) {
@@ -77,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       print(snap.data?.data());
                       return Text(
                         "${snap.data?.data()?["name"]}",
-                        style: const TextStyle(fontSize: 25),
+                        style: const TextStyle(fontSize: 25, color: pColor),
                       );
                     },
                   ),
@@ -96,7 +100,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       print(snap.data?.data());
                       return Text(
                         "${snap.data?.data()?["email"]}",
-                        style: const TextStyle(fontSize: 25),
+                        style: const TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: pColor),
                       );
                     },
                   ),

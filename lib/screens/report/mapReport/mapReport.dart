@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart'; // إضافة الحزمة الجديدة هنا
 import 'package:latlong2/latlong.dart';
-import 'package:mopidati/screens/report/newReportScreen.dart';
 import 'package:mopidati/widgets/message.dart';
 import 'package:mopidati/widgets/my_button_widget.dart';
 
@@ -125,7 +124,7 @@ class _MapReportState extends State<MapReport> {
             ),
           ),
           ButtonWidget(
-              child: const Text('التالي'),
+              child: 'التالي',
               onPressed: () {
                 if (_selectedPoint != null) {
                   // تأكد من أن هناك نقطة مختارة

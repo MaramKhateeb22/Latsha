@@ -76,6 +76,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         return (value.length < 2) ? 'قصير جدا ' : null;
                       }),
                   ButtonWidget(
+                    side:BorderSide(
+                      color:Colors.green,
+                    ),
                       child: 'تسجيل الدخول ',
                       onPressed: () async {
                         try {

@@ -108,6 +108,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       }),
                   const SizedBox(height: 20),
                   ButtonWidget(
+                      side: const BorderSide(
+                        color: Colors.green,
+                      ),
                       child: 'أنشئ الحساب',
                       onPressed: () async {
                         try {

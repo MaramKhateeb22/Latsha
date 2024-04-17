@@ -17,7 +17,7 @@ class CustomInkWell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 210,
+      width: 190,
       height: 70,
       child: InkWell(
         child: Text(
