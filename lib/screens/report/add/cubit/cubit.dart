@@ -8,23 +8,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mopidati/resources/util.dart';
-import 'package:mopidati/screens/newReserve/cubit/state.dart';
+import 'package:mopidati/screens/report/add/cubit/state.dart';
 import 'package:uuid/uuid.dart';
 
-enum statusReverse {
+enum statusReport {
   depinding,
   Accept,
   reject;
 }
 
-class AddReverseCubit extends Cubit<AddReverseState> {
-  AddReverseCubit() : super(AddReverseInitalState());
-  static AddReverseCubit get(context) => BlocProvider.of(context);
+class AddReportCubit extends Cubit<AddReportState> {
+  AddReportCubit() : super(AddReportInitalState());
+  static AddReportCubit get(context) => BlocProvider.of(context);
 
   final formkey = GlobalKey<FormState>();
-  TextEditingController adressController = TextEditingController();
+  TextEditingController AdressController = TextEditingController();
   TextEditingController nameInsectController = TextEditingController();
-  TextEditingController spaceController = TextEditingController();
   Uint8List? image;
   final FirebaseStorage storage = FirebaseStorage.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -45,32 +44,33 @@ class AddReverseCubit extends Cubit<AddReverseState> {
     emit(SelectImageState());
   }
 
-  Future<String> saveDataReverse(context, LatLng point) async {
+  Future<String> saveData(context, LatLng? point) async {
     String resp = "Some Error Occurred";
     try {
-      emit(AddReverseLoadingState());
+      emit(AddReportLoadingState());
       if (formkey.currentState?.validate() ?? false) {
-        String imagUrl = await uploadImageToStorage('ReverseImage', image!);
+        String imagUrl = await uploadImageToStorage('ReportImage', image!);
         // await FirebaseFirestore.instance.collection('markers').add(locationMap);
-        statusReverse statusdepending = statusReverse.depinding;
-        int statusIndex = statusReverse.depinding.index;
+        statusReport statusdepending = statusReport.depinding;
+        int statusIndex = statusReport.depinding.index;
 
         final uuid = const Uuid().v4();
-        await FirebaseFirestore.instance.collection("Reverses").doc(uuid).set({
+        await FirebaseFirestore.instance.collection("Reports").doc(uuid).set({
           'id': uuid,
           'Type Insect': nameInsectController.text,
-          'Adress': adressController.text,
-          'space': spaceController.text,
+          'Adress': AdressController.text,
           'imageLink': imagUrl,
           'location': point.toString(),
-          'statusReverse': statusIndex,
-          // 'numberPhone': numberPhoneController.text,
+          'statusReport': statusIndex,
           'idUser': FirebaseAuth.instance.currentUser!.uid,
           'createdAt': Timestamp.now(),
         });
-
+        // print(point);
+        // 'statusReport': statusdepending.toString().split('.').last,
+        // 'statusReport': statusReport.i,
+        // 'location': point,
         clearForm();
-        emit(AddReverseSuccessState());
+        emit(AddReportSuccessState());
 
         //بدي أظهر للمستخدم تم الارسال بنجاج هنا
         // Navigator.pushNamedAndRemoveUntil(
@@ -82,7 +82,7 @@ class AddReverseCubit extends Cubit<AddReverseState> {
         print("Success submit");
       } else {
         emit(
-          AddReverseErrorState(error: 'Field Required'),
+          AddReportErrorState(error: 'Field Required'),
         );
 
         print('non fire store');
@@ -90,16 +90,15 @@ class AddReverseCubit extends Cubit<AddReverseState> {
       resp = 'Success';
     } catch (err) {
       resp = err.toString();
-      emit(AddReverseErrorState(error: resp));
+      emit(AddReportErrorState(error: resp));
     }
     return resp;
   }
 
   void clearForm() {
     nameInsectController.clear();
-    adressController.clear();
-    spaceController.clear();
-    // numberPhoneController.clear();
+    AdressController.clear();
+
     image = null;
     emit(ClearFormState());
     // webImage = Uint8List(8);

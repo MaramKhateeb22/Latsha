@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_toastr/flutter_toastr.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:mopidati/screens/newReserve/cubit/cubit.dart';
-import 'package:mopidati/screens/newReserve/cubit/state.dart';
-import 'package:mopidati/screens/newReserve/mapReveerse/mapReverse.dart';
+import 'package:mopidati/screens/reverse/add/cubit/cubit.dart';
+import 'package:mopidati/screens/reverse/add/cubit/state.dart';
+import 'package:mopidati/screens/reverse/mapReveerse/mapReverse.dart';
 import 'package:mopidati/utiles/constants.dart';
 import 'package:mopidati/widgets/message.dart';
+import 'package:mopidati/widgets/my_button_widget.dart';
 import 'package:mopidati/widgets/text_form_field.dart';
 
 class NewReverseScreen extends StatefulWidget {
@@ -25,7 +26,7 @@ class _NewReverseScreenState extends State<NewReverseScreen> {
   String? _selectedValue;
   final double _area = 0.0;
   final spacekey = GlobalKey<FormState>();
-  late LatLng point;
+  LatLng? point;
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +116,9 @@ class _NewReverseScreenState extends State<NewReverseScreen> {
                           // تعامل مع حالة أنه لم يتم تمرير أي بيانات
                         }
                       },
-                      child: const Text('حدد مكانك  من  الخريطة'),
+                      child: point == null
+                          ? const Text('حدد مكانك  من  الخريطة')
+                          : const Text('تم التحديد ✔'),
                     ),
                     FutureBuilder<QuerySnapshot<Map<String, dynamic>?>>(
                       future: initInsect(),
@@ -254,8 +257,11 @@ class _NewReverseScreenState extends State<NewReverseScreen> {
                             ? const Center(
                                 child: CircularProgressIndicator(),
                               )
-                            : MaterialButton(
-                                color: sColor,
+                            : ButtonWidget(
+                                icon: Icons.timelapse_outlined,
+
+                                side: const BorderSide(
+                                    color: pColor), // color: sColor,
                                 onPressed: () {
                                   context
                                       .read<AddReverseCubit>()
@@ -266,15 +272,12 @@ class _NewReverseScreenState extends State<NewReverseScreen> {
                                       .read<AddReverseCubit>()
                                       .saveDataReverse(context, point);
                                 },
-                                child: const Text(
-                                  'حجز للرش',
-                                  style: TextStyle(color: Colors.white),
-                                ),
+                                child: 'حجز ',
                               ),
                         FutureBuilder(
                           future: initInsect(),
-                          builder: (context, snapshot) => MaterialButton(
-                            color: sColor,
+                          builder: (context, snapshot) => ButtonWidget(
+                            child: 'التكلفة',
                             onPressed: () {
                               spacekey.currentState?.validate();
                               if (_selectedValue == null) {
@@ -328,10 +331,22 @@ class _NewReverseScreenState extends State<NewReverseScreen> {
                                 );
                               }
                             },
-                            child: const Text(
-                              'تكلفة الرش ',
-                              style: TextStyle(color: Colors.white),
-                            ),
+                            icon: Icons.attach_money_sharp,
+                            colorIcon: pColor,
+                            side: const BorderSide(color: pColor),
+                          ),
+                        ),
+                        FutureBuilder(
+                          future: initInsect(),
+                          builder: (context, snapshot) => ButtonWidget(
+                            colorText: Colors.red,
+                            child: 'حذف',
+                            onPressed: () {
+                              context.read<AddReverseCubit>().clearForm();
+                            },
+                            icon: Icons.delete,
+                            colorIcon: Colors.red,
+                            side: const BorderSide(color: Colors.red),
                           ),
                         ),
                       ],

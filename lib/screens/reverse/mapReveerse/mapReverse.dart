@@ -119,7 +119,7 @@ class _MapReverseState extends State<MapReverse> {
             ),
           ),
           ButtonWidget(
-              child: const Text('التالي'),
+              child: 'التالي',
               onPressed: () {
                 if (_selectedPoint != null) {
                   // تأكد من أن هناك نقطة مختارة
